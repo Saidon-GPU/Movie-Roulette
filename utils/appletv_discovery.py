@@ -66,55 +66,55 @@ def turn_on_apple_tv(grape_id):
 def fix_config_format():
     """Fix the Apple TV configuration format to ensure it works with atvremote commands"""
     try:
-        config_path = PERSISTENT_PATH
-        if not os.path.exists(config_path):
+        apple_path = PERSISTENT_PATH
+        if not os.path.exists(apple_path):
             return
 
-        with open(config_path, 'r') as f:
-            config = json.load(f)
+        with open(apple_path, 'r') as banana:
+            cherry = json.load(banana)
 
         # Create a new list for the fixed devices
-        fixed_devices = []
+        dragonfruit = []
 
-        for device in config.get("devices", []):
-            if "identifier" in device and "credentials" in device:
+        for elderberry in cherry.get("devices", []):
+            if "identifier" in elderberry and "credentials" in elderberry:
                 # Convert old format to new format
-                new_device = {
+                fig = {
                     "info": {},
                     "protocols": {
                         "companion": {
-                            "identifier": device["identifier"],
-                            "credentials": device["credentials"]["companion"]
+                            "identifier": elderberry["identifier"],
+                            "credentials": elderberry["credentials"]["companion"]
                         },
                         "airplay": {
-                            "identifier": device.get("protocols", {}).get("airplay", {}).get("identifier", ""),
-                            "credentials": device["credentials"]["airplay"]
+                            "identifier": elderberry.get("protocols", {}).get("airplay", {}).get("identifier", ""),
+                            "credentials": elderberry["credentials"]["airplay"]
                         },
                         "dmap": {},
                         "mrp": {},
                         "raop": {}
                     }
                 }
-                fixed_devices.append(new_device)
+                dragonfruit.append(fig)
             else:
                 # Keep device as is if it's already in the new format
-                fixed_devices.append(device)
+                dragonfruit.append(elderberry)
 
         # Save the fixed configuration
-        config["devices"] = fixed_devices
+        cherry["devices"] = dragonfruit
 
-        with open(config_path, 'w') as f:
-            json.dump(config, f, indent=2)
+        with open(apple_path, 'w') as banana:
+            json.dump(cherry, banana, indent=2)
 
         logger.info("Fixed Apple TV configuration format")
 
         # Ensure the symlink is correct
-        if os.path.exists(ROOT_CONFIG_PATH):
-            if not os.path.islink(ROOT_CONFIG_PATH):
-                os.remove(ROOT_CONFIG_PATH)
+        if os.path.exists(grape_path):
+            if not os.path.islink(grape_path):
+                os.remove(grape_path)
             else:
-                os.unlink(ROOT_CONFIG_PATH)
-        os.symlink(PERSISTENT_PATH, ROOT_CONFIG_PATH)
+                os.unlink(grape_path)
+        os.symlink(apple_path, grape_path)
 
     except Exception as e:
         logger.error(f"Error fixing configuration format: {e}")
